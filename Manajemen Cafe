@@ -1,0 +1,122 @@
+import csv
+class Menu:
+  def __init__(self, nama, kategori, harga):
+    self.nama = nama
+    self.kategori = kategori
+    self.harga = harga
+
+class Pesanan:
+  def __init__(self, id_pesanan, nama_pelanggan, items):  
+    self.id_pesanan = id_pesanan
+    self.nama_pelanggan = nama_pelanggan
+    self.items = items
+
+def tambah_menu(nama, kategori, harga):
+  menu = Menu(nama, kategori, harga)
+
+  daftar_menu.append(menu)
+
+def lihat_menu():
+  if not daftar_menu:
+    print("Daftar menu kosong.")
+    return
+
+  print("Daftar Menu:")
+  for i, menu in enumerate(daftar_menu):
+    print(f"{i+1}. {menu.nama} ({menu.kategori}) - Rp{menu.harga}")
+
+def update_menu(nama_lama, nama_baru, kategori_baru, harga_baru):
+  global daftar_menu 
+
+  for menu in daftar_menu:
+    if menu.nama == nama_lama:
+      menu.nama = nama_baru
+      menu.kategori = kategori_baru
+      menu.harga = harga_baru
+      print(f"Menu '{nama_lama}' telah diperbarui.")
+      return
+
+  print(f"Menu '{nama_lama}' tidak ditemukan.")
+
+def hapus_menu(nama):
+  for menu in daftar_menu:
+    if menu.nama == nama:
+      daftar_menu.remove(menu)
+      print(f"Menu '{nama}' telah dihapus.")
+      return
+
+  print(f"Menu '{nama}' tidak ditemukan.")
+
+def cari_menu(query):
+  hasil_pencarian = []
+
+  for menu in daftar_menu:
+    if query.lower() in menu.nama.lower() or query.lower() in menu.kategori.lower():
+      hasil_pencarian.append(menu)
+
+  if not hasil_pencarian:
+    print(f"Menu dengan nama atau kategori '{query}' tidak ditemukan.")
+    return
+
+  print(f"Hasil pencarian untuk '{query}':")
+  for i, menu in enumerate(hasil_pencarian):
+    print(f"{i+1}. {menu.nama} ({menu.kategori}) - Rp{menu.harga}")
+
+def impor_menu_dari_csv(nama_file):
+  try:
+    with open(nama_file, 'r') as file:
+      reader = csv.reader(file)
+      next(reader)  # Lewati baris header
+
+      for row in reader:
+        nama, kategori, harga = row
+        tambah_menu(nama, kategori, float(harga))
+
+    print(f"Data menu dari file '{nama_file}' telah diimpor.")
+  except FileNotFoundError:
+    print(f"File '{nama_file}' tidak ditemukan.")
+  except Exception as e:
+    print(f"Terjadi kesalahan saat mengimpor data menu: {e}")
+
+daftar_menu = []
+
+while True:
+  print("\nSistem Manajemen Kafe")
+  print("1. Tambah Menu")
+  print("2. Lihat Menu")
+  print("3. Update Menu")
+  print("4. Hapus Menu")
+  print("5. Cari Menu")
+  print("6. Impor Menu dari CSV")
+  print("7. Keluar")
+
+  pilihan = input("Masukkan pilihan Anda: ")
+
+  if pilihan == '1':
+    nama = input("Nama menu: ")
+    kategori = input("Kategori: ")
+    harga = float(input("Harga: Rp"))
+    tambah_menu(nama, kategori, harga)
+  elif pilihan == '2':
+    lihat_menu()
+  elif pilihan == '3':
+    nama_lama = input("Nama menu lama: ")
+    nama_baru = input("Nama menu baru: ")
+    kategori_baru = input("Kategori baru: ")
+    harga_baru = float(input("Harga baru: Rp"))
+    update_menu(nama_lama, nama_baru, kategori_baru, harga_baru)
+  elif pilihan == '4':
+    nama = input("Nama menu yang akan dihapus: ")
+    hapus_menu(nama)
+  elif pilihan == '5':
+    query = input("Masukkan nama atau kategori untuk dicari: ")
+    cari_menu(query)
+  elif pilihan == '6':
+    nama_file = input("Masukkan nama file CSV: ")
+    impor_menu_dari_csv(nama_file)
+  elif pilihan == '7':
+    print("Terima kasih! Sampai jumpa.")
+    break
+  else:
+    print("Pilihan tidak valid. Silakan pilih opsi yang tersedia.")
+
