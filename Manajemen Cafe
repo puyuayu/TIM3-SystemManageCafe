@@ -5,12 +5,6 @@ class Menu:
     self.kategori = kategori
     self.harga = harga
 
-class Pesanan:
-  def __init__(self, id_pesanan, nama_pelanggan, items):  
-    self.id_pesanan = id_pesanan
-    self.nama_pelanggan = nama_pelanggan
-    self.items = items
-
 def tambah_menu(nama, kategori, harga):
   menu = Menu(nama, kategori, harga)
 
